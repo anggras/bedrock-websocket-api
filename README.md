@@ -1,7 +1,13 @@
 
-# Welcome to your CDK Python project!
+# Welcome to Amazon Bedrock WebSocket API sample project
 
-This is a blank project for CDK development with Python.
+This is a sample project to showcase how to expose Amazon Bedrock response stream through API Gateway WebSocket API
+
+> [!NOTE]
+> In this example, we are using the `meta.llama3-8b-instruct-v1:0` model. You can modify the model to be used in [on_sendmessage.py](functions/on_sendmessage.py) or [request for access](https://us-east-1.console.aws.amazon.com/bedrock/home?region=us-east-1#/modelaccess) using the console. 
+
+> [!TIP]
+> To quickly test the WebSocket connection, you can use [wscat](https://github.com/websockets/wscat) or Postman. 
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
