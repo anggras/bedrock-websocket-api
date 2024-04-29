@@ -3,6 +3,8 @@
 
 This is a sample project to showcase how to expose Amazon Bedrock response stream through API Gateway WebSocket API
 
+![Architecture diagram of the components used](bedrock-websocket-api.png)
+
 > [!NOTE]
 > In this example, we are using the `meta.llama3-8b-instruct-v1:0` model. You can modify the model to be used in [on_sendmessage.py](functions/on_sendmessage.py) or [request for access](https://us-east-1.console.aws.amazon.com/bedrock/home?region=us-east-1#/modelaccess) using the console. 
 
