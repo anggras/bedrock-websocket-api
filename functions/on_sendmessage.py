@@ -26,7 +26,6 @@ def handler(event, context):
             Data=content
         )
 
-
     model_id = "meta.llama3-8b-instruct-v1:0"
     try:
         response = bedrock_client.invoke_model_with_response_stream(
@@ -43,6 +42,7 @@ def handler(event, context):
         stream = response.get('body')
 
         if stream:
+            reply(connection_id, json.dumps({"status": "Start"}))
             for event in stream:
                 chunk = event.get('chunk')
                 if chunk:
@@ -52,7 +52,7 @@ def handler(event, context):
                     reply(connection_id, generated_text)
 
         
-        return generate_response({"status": "OK"})
+        return generate_response({"status": "End"})
     except Exception as e:
         print(e)
         return generate_response(e, code=500)
