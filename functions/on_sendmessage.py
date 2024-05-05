@@ -27,14 +27,29 @@ def handler(event, context):
         )
 
     model_id = "meta.llama3-8b-instruct-v1:0"
+
+    provider = model_id.split(".")[0] 
+    max_tokens = 1000
+    temperature = 0.5
+    request_body = None
+
+    if provider == "meta":
+        request_body = {
+            "prompt": prompt,
+            "max_gen_len": max_tokens,
+            "temperature": temperature
+        }
+    elif provider == "anthropic":
+        request_body = {
+            "prompt": prompt,
+            "max_tokens_to_sample": max_tokens,
+            "temperature": temperature
+        }
+
     try:
         response = bedrock_client.invoke_model_with_response_stream(
             modelId=model_id,
-            body=json.dumps({
-                'prompt': prompt,
-                'max_gen_len': 1000,
-                "temperature": 0.5
-            }),
+            body=json.dumps(request_body),
             accept='application/json', 
             contentType='application/json'
         )
@@ -47,7 +62,12 @@ def handler(event, context):
                 chunk = event.get('chunk')
                 if chunk:
                     chunk_obj = json.loads(chunk.get('bytes').decode())
-                    generated_text = chunk_obj.get('generation')
+
+                    generated_text = ''
+                    if provider == "meta":
+                        generated_text = chunk_obj.get('generation')
+                    elif provider == "anthropic":
+                        generated_text = chunk_obj.get('completion')
 
                     reply(connection_id, generated_text)
 
